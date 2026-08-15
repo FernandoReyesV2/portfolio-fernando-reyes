@@ -1,0 +1,54 @@
+@import "tailwindcss";
+
+/* --------------------------------------------------------------------------
+   1. VARIABLES DE COLOR Y FUENTES
+   -------------------------------------------------------------------------- */
+
+/* Configuración de colores y fuentes para Tailwind v4 */
+@theme {
+  --color-dark: #0F0F0F;
+  --color-olive: #636B2F;
+  --color-light: #FFFCFF;
+  --color-crimson: #A63A50;
+  --color-rose: #A37774;
+
+  --font-sans: 'Playfair Display', Georgia, serif;
+  --font-retro: 'Playfair Display', Georgia, serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+/* --------------------------------------------------------------------------
+   2. ESTILOS BASE GLOBAL
+   -------------------------------------------------------------------------- */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    color: var(--color-light);
+    min-height: 100vh;
+    margin: 0;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Selección de texto personalizada */
+  ::selection {
+    background-color: var(--color-crimson);
+    color: var(--color-light);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   3. SCROLLBAR
+   -------------------------------------------------------------------------- */
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* Para Firefox y MS Edge clásico */
+html, body {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE y Edge */
+}
