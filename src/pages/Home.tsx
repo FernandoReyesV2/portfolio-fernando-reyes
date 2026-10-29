@@ -47,7 +47,7 @@ export default function Home() {
           text="Fernando Reyes" 
           speed={0.05} 
           delay={0.3} 
-          // showCursor={false}
+          showCursor={false}
         />
         </h1>
         
@@ -57,7 +57,7 @@ export default function Home() {
             text={t('role')} 
             speed={0.03} 
             delay={1.2}
-            // showCursor={false}
+            showCursor={false}
           />
         </p>
 
@@ -80,14 +80,14 @@ export default function Home() {
                             text={`${sec.id}.`} 
                             speed={0.02} 
                             delay={itemDelay} 
-                            // showCursor={false} 
+                            showCursor={false} 
                           />
                         </span>
                         <TypewriterText 
                           text={sec.name} 
                           speed={0.025} 
                           delay={itemDelay + 0.05} 
-                          // showCursor={false} 
+                          showCursor={false} 
                         />
                       </span>
                       
@@ -120,7 +120,7 @@ export default function Home() {
               text="GitHub" 
               speed={0.04} 
               delay={3.0} 
-              showCursor={true}
+              showCursor={false}
               hideCursorOnComplete={true}
             />
           </a>
@@ -137,7 +137,7 @@ export default function Home() {
               text="LinkedIn" 
               speed={0.04} 
               delay={3.4} 
-              showCursor={true}
+              showCursor={false}
               hideCursorOnComplete={true}
             />
           </a>
@@ -152,7 +152,7 @@ export default function Home() {
               text="Email" 
               speed={0.04} 
               delay={3.85} 
-              showCursor={true}
+              showCursor={false}
               hideCursorOnComplete={true}
             />
           </a>
