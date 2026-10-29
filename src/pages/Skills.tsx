@@ -1,7 +1,22 @@
+import { motion, type Variants } from 'framer-motion';
 import BackToIndex from '../components/BackToIndex';
 import ChapterNav from '../components/ChapterNav';
+import TypewriterText from '../components/TypewriterText';
 import { useLanguage } from '../context/LanguageContext';
 import SpiderLilyBackground from '../components/SpiderLilyBackground';
+
+const categoryVariants: Variants = {
+  hidden: { opacity: 0, y: 16 },
+  visible: (customDelay: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.5,
+      delay: customDelay,
+      ease: [0.25, 0.1, 0.25, 1.0] as const,
+    },
+  }),
+};
 
 export default function Skills() {
   const { language, t } = useLanguage();
@@ -76,52 +91,82 @@ export default function Skills() {
         }}
       />
 
-      {/* MARCAS DE AGUA LYCORIS RADIATA (#A37774) */}
+      {/* MARCAS DE AGUA LYCORIS RADIATA */}
       <SpiderLilyBackground />
 
       {/* CONTENIDO PRINCIPAL */}
-      <div className="relative z-10 max-w-3xl w-full flex flex-col items-center">
+      <div key={language} className="relative z-10 max-w-3xl w-full flex flex-col items-center">
         
         {/* Header de Sección */}
         <div className="text-center mb-16">
           <span className="text-sm font-mono tracking-widest uppercase opacity-70 block mb-2">
-            — {t('section')} II —
+            <TypewriterText 
+              text={`— ${t('section')} II —`} 
+              speed={0.03} 
+              delay={0.2} 
+              showCursor={false} 
+            />
           </span>
           <h2 className="text-4xl md:text-6xl font-bold tracking-tight text-olive italic">
-            {t('titleSkills')}
+            <TypewriterText 
+              text={t('titleSkills')} 
+              speed={0.035} 
+              delay={0.5} 
+              showCursor={false} 
+            />
           </h2>
         </div>
 
         {/* Rejilla / Lista de Habilidades */}
         <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-12">
-          {skillCategories.map((group, idx) => (
-            <div 
-              key={idx} 
-              className="border-t border-olive/30 pt-6 flex flex-col justify-start"
-            >
-              {/* Título de Categoría */}
-              <h3 className="font-mono text-xs md:text-sm font-bold tracking-widest uppercase opacity-80 mb-6">
-                [ {group.category} ]
-              </h3>
+          {skillCategories.map((group, idx) => {
+            const baseDelay = 0.9 + idx * 0.15;
 
-              {/* Items de Habilidades */}
-              <ul className="space-y-3">
-                {group.skills.map((skill, itemIdx) => (
-                  <li 
-                    key={itemIdx}
-                    className="flex items-center text-base md:text-lg text-olive/90"
-                  >
-                    <span className="text-xs font-mono mr-3 opacity-50">•</span>
-                    <span>{skill}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+            return (
+              <motion.div 
+                key={`${group.category}-${idx}`}
+                variants={categoryVariants}
+                initial="hidden"
+                animate="visible"
+                custom={baseDelay}
+                className="border-t border-olive/30 pt-6 flex flex-col justify-start"
+              >
+                {/* Título de Categoría tipeado */}
+                <h3 className="font-mono text-xs md:text-sm font-bold tracking-widest uppercase opacity-80 mb-6">
+                  <TypewriterText 
+                    text={`[ ${group.category} ]`} 
+                    speed={0.015} 
+                    delay={baseDelay} 
+                    showCursor={false} 
+                  />
+                </h3>
+
+                {/* Items de Habilidades */}
+                <ul className="space-y-3">
+                  {group.skills.map((skill, itemIdx) => (
+                    <li 
+                      key={itemIdx}
+                      className="flex items-center text-base md:text-lg text-olive/90"
+                    >
+                      <span className="text-xs font-mono mr-3 opacity-50">•</span>
+                      <span>{skill}</span>
+                    </li>
+                  ))}
+                </ul>
+              </motion.div>
+            );
+          })}
         </div>
 
         {/* Botón para volver al Home / Index */}
-        <BackToIndex />
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.8, duration: 0.5 }}
+          className="w-full flex justify-center mt-12"
+        >
+          <BackToIndex />
+        </motion.div>
 
       </div>
     </section>

@@ -2,9 +2,10 @@ import { Link } from 'react-router-dom';
 import ChapterNav from '../components/ChapterNav';
 import { useLanguage } from '../context/LanguageContext';
 import SpiderLilyBackground from '../components/SpiderLilyBackground';
+import TypewriterText from '../components/TypewriterText';
 
 export default function Home() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
   const secciones = [
     { id: '01', name: t('navProjects'), path: '/projects', page: 'I' },
@@ -41,36 +42,71 @@ export default function Home() {
       <div className="relative z-10 max-w-4xl w-full flex flex-col items-center">
         
         {/* Encabezado Principal */}
-        <h1 className="text-6xl md:text-8xl font-bold tracking-tight text-olive mb-6 italic">
-          Fernando Reyes
+        <h1 className="text-4xl md:text-8xl font-bold tracking-tight text-olive md:mb-6 mb-2 italic">
+          <TypewriterText 
+          text="Fernando Reyes" 
+          speed={0.05} 
+          delay={0.3} 
+          // showCursor={false}
+        />
         </h1>
         
-        <p className="text-base md:text-xl text-olive font-medium tracking-widest uppercase mb-6 opacity-90">
-          {t('role')}
+        <p className="text-sm md:text-xl text-olive font-medium tracking-widest uppercase mb-6 opacity-90 mx-6 text-center md:text-left">
+          <TypewriterText 
+            key={t('role')}
+            text={t('role')} 
+            speed={0.03} 
+            delay={1.2}
+            // showCursor={false}
+          />
         </p>
 
         {/* ÍNDICE*/}
-        <nav className="w-full max-w-lg my-4">
-          <ul className="space-y-4">
-            {secciones.map((sec) => (
-              <li key={sec.id}>
-                <Link
-                  to={sec.path}
-                  className="group flex items-baseline justify-between w-full text-olive hover:opacity-80 transition-opacity"
-                >
-                  <span className="text-lg md:text-xl font-medium group-hover:underline decoration-olive/50 underline-offset-4">
-                    <span className="text-sm font-mono mr-2 opacity-70">{sec.id}.</span>
-                    {sec.name}
-                  </span>
-                  <span className="flex-1 mx-3 border-b border-dotted border-olive/40 translate-y-[-2px]" />
-                  <span className="text-sm md:text-base font-mono font-bold tracking-wider">
-                    {sec.page}
-                  </span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
+        <nav key={language} className="w-full max-w-lg my-4 ">
+            <ul className="space-y-4">
+              {secciones.map((sec, index) => {
+                // Cada ítem de la lista arranca 0.18s después del anterior
+                const itemDelay = 1.8 + index * 0.18;
+
+                return (
+                  <li key={sec.id}>
+                    <Link
+                      to={sec.path}
+                      className="group flex items-baseline justify-between w-full text-olive hover:opacity-80 transition-opacity"
+                    >
+                      <span className="text-lg md:text-xl font-medium group-hover:underline decoration-olive/50 underline-offset-4">
+                        <span className="text-sm font-mono mr-2 opacity-70">
+                          <TypewriterText 
+                            text={`${sec.id}.`} 
+                            speed={0.02} 
+                            delay={itemDelay} 
+                            // showCursor={false} 
+                          />
+                        </span>
+                        <TypewriterText 
+                          text={sec.name} 
+                          speed={0.025} 
+                          delay={itemDelay + 0.05} 
+                          // showCursor={false} 
+                        />
+                      </span>
+                      
+                      <span className="flex-1 mx-3 border-b border-dotted border-olive/40 translate-y-[-2px]" />
+                      
+                      <span className="text-sm md:text-base font-mono font-bold tracking-wider">
+                        <TypewriterText 
+                          text={sec.page} 
+                          speed={0.02} 
+                          delay={itemDelay + 0.15} 
+                          showCursor={false} 
+                        />
+                      </span>
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </nav>
 
         {/* Enlaces Rápidos a Redes */}
         <div className="flex gap-6 mt-16 text-sm text-olive tracking-widest uppercase">
@@ -80,23 +116,45 @@ export default function Home() {
             rel="noopener noreferrer"
             className="hover:underline underline-offset-4 transition-all"
           >
-            GitHub
+            <TypewriterText 
+              text="GitHub" 
+              speed={0.04} 
+              delay={3.0} 
+              showCursor={true}
+              hideCursorOnComplete={true}
+            />
           </a>
+
           <span className="opacity-40">•</span>
+
           <a
             href="https://www.linkedin.com/in/fernando-josue-reyes-vanegas-3876602aa"
             target="_blank"
             rel="noopener noreferrer"
             className="hover:underline underline-offset-4 transition-all"
           >
-            LinkedIn
+            <TypewriterText 
+              text="LinkedIn" 
+              speed={0.04} 
+              delay={3.4} 
+              showCursor={true}
+              hideCursorOnComplete={true}
+            />
           </a>
+
           <span className="opacity-40">•</span>
+
           <a
             href="mailto:fernandojrv73@hotmail.com"
             className="hover:underline underline-offset-4 transition-all"
           >
-            Email
+            <TypewriterText 
+              text="Email" 
+              speed={0.04} 
+              delay={3.85} 
+              showCursor={true}
+              hideCursorOnComplete={true}
+            />
           </a>
         </div>
 

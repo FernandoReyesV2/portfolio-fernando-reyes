@@ -1,7 +1,22 @@
+import { motion, type Variants } from 'framer-motion';
 import BackToIndex from '../components/BackToIndex';
 import ChapterNav from '../components/ChapterNav';
+import TypewriterText from '../components/TypewriterText';
 import { useLanguage } from '../context/LanguageContext';
 import SpiderLilyBackground from '../components/SpiderLilyBackground';
+
+const cardVariants: Variants = {
+  hidden: { opacity: 0, y: 16 },
+  visible: (customDelay: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.5,
+      delay: customDelay,
+      ease: [0.25, 0.1, 0.25, 1.0] as const,
+    },
+  }),
+};
 
 export default function Experience() {
   const { language, t } = useLanguage();
@@ -78,72 +93,136 @@ export default function Experience() {
         }}
       />
 
-      {/* MARCAS DE AGUA LYCORIS RADIATA (#A37774) */}
+      {/* MARCAS DE AGUA LYCORIS RADIATA */}
       <SpiderLilyBackground />
 
       {/* CONTENIDO PRINCIPAL */}
-      <div className="relative z-10 max-w-3xl w-full flex flex-col items-center">
+      <div key={language} className="relative z-10 max-w-3xl w-full flex flex-col items-center">
         
         {/* Header de Sección */}
         <div className="text-center mb-16">
           <span className="text-sm font-mono tracking-widest uppercase opacity-70 block mb-2">
-            — {t('section')} III —
+            <TypewriterText 
+              text={`— ${t('section')} III —`} 
+              speed={0.03} 
+              delay={0.2} 
+              showCursor={false} 
+            />
           </span>
           <h2 className="text-4xl md:text-6xl font-bold tracking-tight text-olive italic">
-            {t('titleExperience')}
+            <TypewriterText 
+              text={t('titleExperience')} 
+              speed={0.035} 
+              delay={0.5} 
+              showCursor={false} 
+            />
           </h2>
         </div>
 
         {/* Bloque de Experiencia Profesional */}
         <div className="w-full space-y-12 mb-16">
           <h3 className="font-mono text-xs md:text-sm font-bold tracking-widest uppercase opacity-80 border-b border-olive/30 pb-2">
-            [ {language === 'es' ? 'TRAYECTORIA PROFESIONAL' : 'PROFESSIONAL EXPERIENCE'} ]
+            <TypewriterText 
+              text={`[ ${language === 'es' ? 'TRAYECTORIA PROFESIONAL' : 'PROFESSIONAL EXPERIENCE'} ]`} 
+              speed={0.02} 
+              delay={0.9} 
+              showCursor={false} 
+            />
           </h3>
 
-          {experiences.map((item, idx) => (
-            <article key={idx} className="border-l-2 border-olive/40 pl-6 space-y-2">
-              <span className="text-xs font-mono tracking-widest opacity-70 block">
-                {item.period}
-              </span>
-              <h4 className="text-xl md:text-2xl font-bold italic">
-                {item.role}
-              </h4>
-              <p className="text-sm md:text-base font-mono opacity-90 pb-2">
-                {item.entity}
-              </p>
-              <ul className="space-y-2 pt-2">
-                {item.details.map((detail, dIdx) => (
-                  <li key={dIdx} className="text-base text-olive/90 flex items-start">
-                    <span className="text-xs font-mono mr-2 mt-1 opacity-60">—</span>
-                    <span>{detail}</span>
-                  </li>
-                ))}
-              </ul>
-            </article>
-          ))}
+          {experiences.map((item, idx) => {
+            const expDelay = 1.1 + idx * 0.25;
+
+            return (
+              <motion.article 
+                key={`${item.period}-${idx}`}
+                variants={cardVariants}
+                initial="hidden"
+                animate="visible"
+                custom={expDelay}
+                className="border-l-2 border-olive/40 pl-6 space-y-2"
+              >
+                <span className="text-xs font-mono tracking-widest opacity-70 block">
+                  <TypewriterText 
+                    text={item.period} 
+                    speed={0.015} 
+                    delay={expDelay} 
+                    showCursor={false} 
+                  />
+                </span>
+                <h4 className="text-xl md:text-2xl font-bold italic">
+                  <TypewriterText 
+                    text={item.role} 
+                    speed={0.02} 
+                    delay={expDelay + 0.1} 
+                    showCursor={false} 
+                  />
+                </h4>
+                <p className="text-sm md:text-base font-mono opacity-90 pb-2">
+                  {item.entity}
+                </p>
+                <ul className="space-y-2 pt-2">
+                  {item.details.map((detail, dIdx) => (
+                    <li key={dIdx} className="text-base text-olive/90 flex items-start">
+                      <span className="text-xs font-mono mr-2 mt-1 opacity-60">—</span>
+                      <span>{detail}</span>
+                    </li>
+                  ))}
+                </ul>
+              </motion.article>
+            );
+          })}
         </div>
 
         {/* Bloque de Formación Académica */}
         <div className="w-full space-y-6">
           <h3 className="font-mono text-xs md:text-sm font-bold tracking-widest uppercase opacity-80 border-b border-olive/30 pb-2">
-            [ {language === 'es' ? 'FORMACIÓN ACADÉMICA' : 'EDUCATION'} ]
+            <TypewriterText 
+              text={`[ ${language === 'es' ? 'FORMACIÓN ACADÉMICA' : 'EDUCATION'} ]`} 
+              speed={0.02} 
+              delay={1.7} 
+              showCursor={false} 
+            />
           </h3>
 
-          <article className="border-l-2 border-olive/40 pl-6 space-y-1">
+          <motion.article 
+            variants={cardVariants}
+            initial="hidden"
+            animate="visible"
+            custom={1.9}
+            className="border-l-2 border-olive/40 pl-6 space-y-1"
+          >
             <span className="text-xs font-mono tracking-widest opacity-70 block">
-              {education.period}
+              <TypewriterText 
+                text={education.period} 
+                speed={0.02} 
+                delay={1.9} 
+                showCursor={false} 
+              />
             </span>
             <h4 className="text-xl md:text-2xl font-bold italic">
-              {education.degree}
+              <TypewriterText 
+                text={education.degree} 
+                speed={0.02} 
+                delay={2.05} 
+                showCursor={false} 
+              />
             </h4>
             <p className="text-base text-olive/90">
               {education.institution}
             </p>
-          </article>
+          </motion.article>
         </div>
 
         {/* Botón para volver al Home / Index */}
-        <BackToIndex />
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 2.3, duration: 0.5 }}
+          className="w-full flex justify-center mt-12"
+        >
+          <BackToIndex />
+        </motion.div>
 
       </div>
     </section>
