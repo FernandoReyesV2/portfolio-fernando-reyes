@@ -1,75 +1,30 @@
-# React + TypeScript + Vite
+# Fernando Reyes — Portfolio Web
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+¡Hola! Soy **Fernando Reyes**, Ingeniero de Software y Desarrollador Frontend. Me especializo en construir aplicaciones web modernas, rápidas y accesibles utilizando el ecosistema de **React**, **TypeScript** y **Tailwind CSS**, prestando especial atención a los detalles visuales, el rendimiento y la experiencia de usuario.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 📖 Sobre el Proyecto
 
-## React Compiler
+Este portafolio está concebido con una **estética editorial y técnica**, inspirada en la lectura de un libro o documento técnico dividido en capítulos:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+* **Navegación Cinematográfica:** Transiciones direccionales fluidas entre páginas que emulan un paso de hoja mediante efectos de desenfoque (*wipe blur*).
+* **Tipografía Dinámica:** Animaciones de máquina de escribir secuenciales y adaptativas para encabezados y secciones.
+* **Internacionalización (i18n):** Soporte bilingüe completo (Español / Inglés) en tiempo real.
+* **UI Responsiva & Glassmorphism:** Microinteracciones de cristal líquido (*liquid glass*) y diseño optimizado tanto para escritorio como para dispositivos móviles.
 
-## Expanding the ESLint configuration
+### Stack Principal
+* **Frontend:** React, TypeScript, Tailwind CSS
+* **Animaciones:** Framer Motion
+* **Enrutamiento & Herramientas:** React Router, Vite
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## 📬 Contacto
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+Estoy disponible para oportunidades laborales en desarrollo frontend, proyectos web y soluciones de software:
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
-```
+* **Ubicación:** Milagro, Ecuador
+* **Email:** [fernandojrv73@hotmail.com](mailto:fernandojrv73@hotmail.com)
+* **LinkedIn:** [Fernando Reyes](https://www.linkedin.com/in/fernando-josue-reyes-vanegas-3876602aa)
+* **GitHub:** [@FernandoReyesV2](https://github.com/FernandoReyesV2)
