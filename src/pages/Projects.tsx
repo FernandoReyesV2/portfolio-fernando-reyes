@@ -1,11 +1,10 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { motion, type Variants } from 'framer-motion';
 import BackToIndex from '../components/BackToIndex';
 import ChapterNav from '../components/ChapterNav';
 import ProjectModal from '../components/ProjectModal';
 import TypewriterText from '../components/TypewriterText';
 import { useLanguage } from '../context/LanguageContext';
-import SpiderLilyBackground from '../components/SpiderLilyBackground';
 
 const cardVariants: Variants = {
   hidden: { opacity: 0, y: 16 },
@@ -20,12 +19,104 @@ const cardVariants: Variants = {
   }),
 };
 
+interface ProjectImageStripProps {
+  images: string[];
+  projectTitle: string;
+  onOpenModal: (index: number) => void;
+  language: string;
+}
+
+function ProjectImageStrip({ images, projectTitle, onOpenModal, language }: ProjectImageStripProps) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [canScroll, setCanScroll] = useState(false);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+
+    const checkOverflow = () => {
+      setCanScroll(el.scrollWidth > el.clientWidth + 1);
+    };
+
+    checkOverflow();
+
+    const resizeObserver = new ResizeObserver(checkOverflow);
+    resizeObserver.observe(el);
+
+    return () => resizeObserver.disconnect();
+  }, [images]);
+
+  const scroll = (direction: 'left' | 'right') => {
+    if (scrollRef.current) {
+      const scrollAmount = 300;
+      scrollRef.current.scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: 'smooth',
+      });
+    }
+  };
+
+  return (
+    <div className="relative w-full group/strip mb-6">
+      {/* Botón flecha izquierda: sólo visible si hay desbordamiento y a partir de pantallas medianas (md) */}
+      {canScroll && (
+        <button
+          type="button"
+          onClick={() => scroll('left')}
+          aria-label="Desplazar a la izquierda"
+          className="hidden md:flex absolute -left-3 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-dark/80 hover:bg-olive text-light border border-olive/40 backdrop-blur-sm items-center justify-center font-mono text-base shadow-md opacity-0 group-hover/strip:opacity-100 transition-opacity cursor-pointer select-none"
+        >
+          ‹
+        </button>
+      )}
+
+      {/* Contenedor desplazable de miniaturas */}
+      <div
+        ref={scrollRef}
+        className="flex gap-2 overflow-x-auto scroll-smooth scrollbar-none snap-x snap-mandatory"
+      >
+        {images.map((imgSrc, imgIdx) => (
+          <div
+            key={imgIdx}
+            onClick={() => onOpenModal(imgIdx)}
+            className="relative flex-none w-32 sm:w-40 aspect-video rounded-md overflow-hidden transition-all cursor-pointer group/item snap-start select-none"
+          >
+            <img
+              src={imgSrc}
+              alt={`${projectTitle} - captura ${imgIdx + 1}`}
+              className="w-full h-full object-cover object-top transition-transform duration-300 group-hover/item:scale-105"
+            />
+            <div className="absolute inset-0 bg-dark/25 opacity-0 group-hover/item:opacity-100 transition-opacity flex items-center justify-center">
+              <span className="font-mono text-[10px] text-light bg-dark/80 backdrop-blur-xs px-2 py-0.5 rounded tracking-wider">
+                [ ⤢ {language === 'es' ? 'Ampliar' : 'Zoom'} ]
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Botón flecha derecha: sólo visible si hay desbordamiento y a partir de pantallas medianas (md) */}
+      {canScroll && (
+        <button
+          type="button"
+          onClick={() => scroll('right')}
+          aria-label="Desplazar a la derecha"
+          className="hidden md:flex absolute -right-3 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-dark/80 hover:bg-olive text-light border border-olive/40 backdrop-blur-sm items-center justify-center font-mono text-base shadow-md opacity-0 group-hover/strip:opacity-100 transition-opacity cursor-pointer select-none"
+        >
+          ›
+        </button>
+      )}
+    </div>
+  );
+}
+
 export default function Projects() {
   const { language, t } = useLanguage();
   const [selectedPreview, setSelectedPreview] = useState<{
-  title: string;
-  images: string[];
-  techStack?: string[];
+    title: string;
+    images: string[];
+    techStack?: string[];
+    initialIndex?: number;
   } | null>(null);
 
   const proyectos = [
@@ -127,9 +218,6 @@ export default function Projects() {
         }}
       />
 
-      {/* MARCAS DE AGUA */}
-      <SpiderLilyBackground />
-
       <div key={language} className="relative z-10 max-w-3xl w-full flex flex-col items-center">
         {/* Encabezado de Sección */}
         <div className="text-center mb-16">
@@ -158,6 +246,15 @@ export default function Projects() {
             const hasImages = proj.images && proj.images.length > 0;
             const baseDelay = 1.0 + idx * 0.25;
 
+            const handleOpenModal = (index = 0) => {
+              setSelectedPreview({
+                title: proj.titulo,
+                images: proj.images,
+                techStack: proj.techStack,
+                initialIndex: index,
+              });
+            };
+
             return (
               <motion.article 
                 key={`${proj.capitulo}-${idx}`}
@@ -167,7 +264,7 @@ export default function Projects() {
                 custom={baseDelay}
                 className="border-b border-olive/30 pb-12 last:border-b-0"
               >
-                {/* Contenedor adaptativo: columna en móvil, fila con justify-between en pantallas medianas */}
+                {/* Cabecera del proyecto */}
                 <div className="flex flex-col sm:flex-row sm:justify-between sm:items-baseline gap-1 mb-2 font-mono text-xs md:text-sm opacity-70 tracking-widest">
                   <span>
                     <TypewriterText 
@@ -189,14 +286,26 @@ export default function Projects() {
                   />
                 </h3>
 
-                <p className="text-base md:text-lg leading-relaxed text-olive/90 mb-6 font-normal">
+                {/* Descripción del proyecto */}
+                <p className="text-base md:text-lg leading-relaxed text-olive/90 mb-4 font-normal">
                   {proj.descripcion}
                 </p>
 
+                {/* BANDA DE IMÁGENES CON FLECHAS DE NAVEGACIÓN */}
+                {hasImages && (
+                  <ProjectImageStrip
+                    images={proj.images}
+                    projectTitle={proj.titulo}
+                    onOpenModal={handleOpenModal}
+                    language={language}
+                  />
+                )}
+
+                {/* Enlaces y Acciones */}
                 <div className="flex flex-wrap items-center gap-4 text-sm font-mono tracking-widest uppercase">
                   {hasImages && (
                     <button
-                      onClick={() => setSelectedPreview({ title: proj.titulo, images: proj.images, techStack: proj.techStack })}
+                      onClick={() => handleOpenModal(0)}
                       className="hover:underline underline-offset-4 transition-all"
                     >
                       [ {language === 'es' ? 'Ver Galería' : 'View Gallery'} ({proj.images.length}) ]
@@ -237,13 +346,14 @@ export default function Projects() {
         </motion.div>
       </div>
 
-      {/* Modal con carrusel */}
+      {/* Modal con visor completo sincronizado al índice inicial */}
       <ProjectModal
         isOpen={!!selectedPreview}
         onClose={() => setSelectedPreview(null)}
         title={selectedPreview?.title || ''}
         images={selectedPreview?.images || []}
         techStack={selectedPreview?.techStack || []}
+        initialIndex={selectedPreview?.initialIndex ?? 0}
       />
     </section>
   );

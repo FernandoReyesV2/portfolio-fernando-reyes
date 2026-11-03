@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import ChapterNav from '../components/ChapterNav';
 import { useLanguage } from '../context/LanguageContext';
-import SpiderLilyBackground from '../components/SpiderLilyBackground';
+// import SpiderLilyBackground from '../components/SpiderLilyBackground';
 import TypewriterText from '../components/TypewriterText';
 
 export default function Home() {
@@ -36,7 +36,7 @@ export default function Home() {
       />
 
       {/* MARCAS DE AGUA LYCORIS RADIATA (#A37774) */}
-      <SpiderLilyBackground />
+      {/* <SpiderLilyBackground /> */}
 
       {/* CONTENIDO PRINCIPAL */}
       <div className="relative z-10 max-w-4xl w-full flex flex-col items-center">

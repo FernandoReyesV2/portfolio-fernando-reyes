@@ -1,20 +1,20 @@
 @import "tailwindcss";
 
 /* --------------------------------------------------------------------------
-   1. VARIABLES DE COLOR Y FUENTES
+   1. VARIABLES DE COLOR, FUENTES Y GRADIENTES
    -------------------------------------------------------------------------- */
-
-/* Configuración de colores y fuentes para Tailwind v4 */
 @theme {
   --color-dark: #0F0F0F;
   --color-olive: #636B2F;
-  --color-light: #FFFCFF;
+  --color-light: #F1F1F1;
   --color-crimson: #A63A50;
   --color-rose: #A37774;
 
   --font-sans: 'Playfair Display', Georgia, serif;
   --font-retro: 'Playfair Display', Georgia, serif;
   --font-mono: 'JetBrains Mono', monospace;
+
+  --background-image-radial-crimson: radial-gradient(circle at center, #7C2333 3%, #0F0F0F 100%);
 }
 
 /* --------------------------------------------------------------------------
@@ -31,6 +31,9 @@
     margin: 0;
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
+    background-color: #0F0F0F;
+    background-image: var(--background-image-radial-crimson);
+    background-attachment: fixed;
   }
 
   /* Selección de texto personalizada */

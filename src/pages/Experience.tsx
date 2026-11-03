@@ -94,7 +94,7 @@ export default function Experience() {
       />
 
       {/* MARCAS DE AGUA LYCORIS RADIATA */}
-      <SpiderLilyBackground />
+      {/* <SpiderLilyBackground /> */}
 
       {/* CONTENIDO PRINCIPAL */}
       <div key={language} className="relative z-10 max-w-3xl w-full flex flex-col items-center">

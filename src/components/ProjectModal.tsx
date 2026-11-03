@@ -52,16 +52,24 @@ interface ProjectModalProps {
   title: string;
   images: string[];
   techStack?: string[];
+  initialIndex?: number; // <-- 1. Añadido
 }
 
-export default function ProjectModal({ isOpen, onClose, images, techStack = [] }: ProjectModalProps) {
-  const [currentIndex, setCurrentIndex] = useState(0);
+export default function ProjectModal({
+  isOpen,
+  onClose,
+  images,
+  techStack = [],
+  initialIndex = 0, // <-- 2. Valor inicial recibido
+}: ProjectModalProps) {
+  const [currentIndex, setCurrentIndex] = useState(initialIndex);
 
+  // Sincroniza el índice activo con la imagen clickeada cada vez que se abre el modal
   useEffect(() => {
     if (isOpen) {
-      setCurrentIndex(0);
+      setCurrentIndex(initialIndex);
     }
-  }, [isOpen, images]);
+  }, [isOpen, images, initialIndex]);
 
   const handlePrev = () => {
     setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
@@ -113,7 +121,7 @@ export default function ProjectModal({ isOpen, onClose, images, techStack = [] }
             transition={{ duration: 0.25, ease: 'easeOut' }}
             className="relative z-10 flex flex-col items-center max-w-5xl w-full"
           >
-            {/* LOGOS OFICIALES: Sin caja contenedora, con nombre abajo */}
+            {/* LOGOS OFICIALES */}
             {techStack.length > 0 && (
               <motion.div
                 initial={{ opacity: 0, y: -10 }}
