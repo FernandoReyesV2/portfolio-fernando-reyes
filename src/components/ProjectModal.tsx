@@ -1,4 +1,4 @@
-import { useState, useEffect, type ReactNode } from 'react';
+import { useState, useEffect, useCallback, type ReactNode } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   SiReact,
@@ -38,7 +38,7 @@ const TECH_ICONS: Record<string, { label: string; icon: ReactNode }> = {
   },
   yolo: {
     label: 'YOLO',
-    icon: <LuScanEye className="w-8 h-8 md:w-14 md:h-14 stroke-[1.5] " />,
+    icon: <LuScanEye className="w-8 h-8 md:w-14 md:h-14 stroke-[1.5]" />,
   },
   api: {
     label: 'REST API',
@@ -52,7 +52,7 @@ interface ProjectModalProps {
   title: string;
   images: string[];
   techStack?: string[];
-  initialIndex?: number; // <-- 1. Añadido
+  initialIndex?: number;
 }
 
 export default function ProjectModal({
@@ -60,28 +60,34 @@ export default function ProjectModal({
   onClose,
   images,
   techStack = [],
-  initialIndex = 0, // <-- 2. Valor inicial recibido
+  initialIndex = 0,
 }: ProjectModalProps) {
   const [currentIndex, setCurrentIndex] = useState(initialIndex);
+  const [prevInitialIndex, setPrevInitialIndex] = useState(initialIndex);
+  const [prevIsOpen, setPrevIsOpen] = useState(isOpen);
 
-  // Sincroniza el índice activo con la imagen clickeada cada vez que se abre el modal
-  useEffect(() => {
+  // Sincronización idiomática durante el render (elimina react-hooks/set-state-in-effect)
+  if (isOpen !== prevIsOpen || initialIndex !== prevInitialIndex) {
+    setPrevIsOpen(isOpen);
+    setPrevInitialIndex(initialIndex);
     if (isOpen) {
       setCurrentIndex(initialIndex);
     }
-  }, [isOpen, images, initialIndex]);
+  }
 
-  const handlePrev = () => {
+  const handlePrev = useCallback(() => {
     setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
-  };
+  }, [images.length]);
 
-  const handleNext = () => {
+  const handleNext = useCallback(() => {
     setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
-  };
+  }, [images.length]);
 
+  // Manejo de teclado con dependencias completas y funciones memorizadas
   useEffect(() => {
+    if (!isOpen) return;
+
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (!isOpen) return;
       if (e.key === 'ArrowLeft') handlePrev();
       if (e.key === 'ArrowRight') handleNext();
       if (e.key === 'Escape') onClose();
@@ -89,7 +95,7 @@ export default function ProjectModal({
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, images.length]);
+  }, [isOpen, handleNext, handlePrev, onClose]);
 
   return (
     <AnimatePresence>

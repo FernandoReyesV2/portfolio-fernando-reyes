@@ -3,7 +3,7 @@ import BackToIndex from '../components/BackToIndex';
 import ChapterNav from '../components/ChapterNav';
 import TypewriterText from '../components/TypewriterText';
 import { useLanguage } from '../context/LanguageContext';
-import SpiderLilyBackground from '../components/SpiderLilyBackground';
+// import SpiderLilyBackground from '../components/SpiderLilyBackground';
 
 const categoryVariants: Variants = {
   hidden: { opacity: 0, y: 16 },
